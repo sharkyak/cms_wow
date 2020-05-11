@@ -1,0 +1,18 @@
+.MuiGrid-item {
+    min-width: 80%;
+    text-align: center;
+}
+
+.MuiPaper-root {
+    padding: 20px;
+}
+
+.MuiTypography-root,
+.MuiTextField-root,
+.MuiButton-root {
+    margin: 20px !important;
+}
+
+#uuid {
+    text-align: center;
+}

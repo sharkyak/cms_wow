@@ -61,7 +61,7 @@ exports.getUserInfo = async (req, res, next) => {
             })
         }
 
-        const tx = await Bank.find({ user })
+        const tx = await Bank.find({ user }).sort({ _id: -1 }).limit(10)
 
         await updateGold()
         await updateSells()
@@ -70,6 +70,71 @@ exports.getUserInfo = async (req, res, next) => {
         return res.status(200).json({
             success: true,
             data: { user, tx }
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        })
+    }
+}
+
+// @desc    Get all gold data
+// @route   POST /api/v1/allgold
+// @access  Public
+exports.getAllGold = async (req, res, next) => {
+    try {
+        const alltx = await Bank.find()
+
+        const balance = alltx.reduce((acc, curr) => acc + curr.summ, 0)
+
+        const tx = await Bank.find().sort({ _id: -1 }).limit(20)
+
+        return res.status(200).json({
+            success: true,
+            data: { balance, tx }
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        })
+    }
+}
+
+// @desc    Get all payouts
+// @route   POST /api/v1/payouts
+// @access  Public
+exports.getPayouts = async (req, res, next) => {
+    try {
+        const tx = await Payout.find().sort({ _id: -1 }).limit(10)
+
+        return res.status(200).json({
+            success: true,
+            data: { tx }
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        })
+    }
+}
+
+// @desc    Get all users
+// @route   GET /api/v1/
+// @access  Public
+exports.getUsers = async (req, res, next) => {
+    try {
+        const users = await User.find()
+
+        const data = users.map(el => {
+            return { _id: el._id, name: el.name, topay: el.topay }
+        })
+
+        return res.status(200).json({
+            success: true,
+            data
         })
     } catch (err) {
         return res.status(500).json({
