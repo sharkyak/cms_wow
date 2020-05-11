@@ -151,6 +151,12 @@ const Admin = ({ userData, updateUserData }) => {
         }
     }
 
+    const findName = id => {
+        const user = users.find(el => el._id === id)
+        if (user) return user.name
+        else return ''
+    }
+
     return (
         <>
             <Container>
@@ -381,12 +387,7 @@ const Admin = ({ userData, updateUserData }) => {
                                                 {moment(row.date).format('lll')}
                                             </TableCell>
                                             <TableCell>
-                                                {
-                                                    users.find(
-                                                        el =>
-                                                            el._id === row.user
-                                                    ).name
-                                                }
+                                                {findName(row.user)}
                                             </TableCell>
                                             <TableCell>{row.summ}</TableCell>
                                             <TableCell align='right'>
