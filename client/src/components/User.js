@@ -16,7 +16,7 @@ import {
     TableCell
 } from '@material-ui/core'
 
-const User = ({ userData, updateUserData }) => {
+const User = ({ userData, updateUserData, goToLogin }) => {
     const [summ, setSumm] = useState('')
     const [descr, setDescr] = useState('')
 
@@ -42,6 +42,11 @@ const User = ({ userData, updateUserData }) => {
         }
     }
 
+    const onExit = () => {
+        localStorage.clear()
+        goToLogin()
+    }
+
     return (
         <>
             <Container>
@@ -56,6 +61,14 @@ const User = ({ userData, updateUserData }) => {
                         <Typography variant='h5'>
                             {userData.user.name}
                         </Typography>
+                        <Button
+                            variant='outlined'
+                            color='secondary'
+                            size='small'
+                            onClick={onExit}
+                        >
+                            Выход
+                        </Button>
                     </Grid>
                     <Grid item xs>
                         <Paper elevation={3}>

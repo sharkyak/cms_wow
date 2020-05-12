@@ -20,7 +20,7 @@ import {
     MenuItem
 } from '@material-ui/core'
 
-const Admin = ({ userData, updateUserData }) => {
+const Admin = ({ userData, updateUserData, goToLogin }) => {
     const [summ, setSumm] = useState('')
     const [descr, setDescr] = useState('')
 
@@ -157,6 +157,11 @@ const Admin = ({ userData, updateUserData }) => {
         else return ''
     }
 
+    const onExit = () => {
+        localStorage.clear()
+        goToLogin()
+    }
+
     return (
         <>
             <Container>
@@ -171,6 +176,14 @@ const Admin = ({ userData, updateUserData }) => {
                         <Typography variant='h5'>
                             {userData.user.name}
                         </Typography>
+                        <Button
+                            variant='outlined'
+                            color='secondary'
+                            size='small'
+                            onClick={onExit}
+                        >
+                            Выход
+                        </Button>
                     </Grid>
                     <Grid item xs>
                         <Paper elevation={3}>

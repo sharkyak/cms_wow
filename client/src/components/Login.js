@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import {
     Container,
@@ -11,21 +11,30 @@ import {
 const Login = ({ updatePage }) => {
     const [uuid, setUuid] = useState('')
 
-    const onClick = async () => {
-        if (uuid) {
-            try {
-                const res = await axios.post('/api/v1/', { uuid })
+    useEffect(() => {
+        const localUuid = localStorage.getItem('uuid')
+        if (localUuid) fetchUserData(localUuid)
+        // eslint-disable-next-line
+    }, [])
 
-                if (res.data.success) {
-                    if (res.data.data.user.admin)
-                        updatePage(res.data.data, 'admin')
-                    else updatePage(res.data.data, 'user')
-                }
-            } catch (err) {
-                console.log(err)
+    const fetchUserData = async id => {
+        try {
+            const res = await axios.post('/api/v1/', { uuid: id })
+
+            if (res.data.success) {
+                localStorage.setItem('uuid', id)
+                if (res.data.data.user.admin) updatePage(res.data.data, 'admin')
+                else updatePage(res.data.data, 'user')
             }
+        } catch (err) {
+            console.log(err)
         }
     }
+
+    const onClick = async () => {
+        if (uuid) fetchUserData(uuid)
+    }
+
     return (
         <>
             <Container>

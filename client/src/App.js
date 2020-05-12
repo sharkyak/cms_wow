@@ -27,14 +27,24 @@ const App = () => {
         }
     }
 
+    const goToLogin = () => setPage('login')
+
     return (
         <>
             {page === 'login' && <Login updatePage={updatePage} />}
             {page === 'user' && (
-                <User userData={userData} updateUserData={updateUserData} />
+                <User
+                    userData={userData}
+                    updateUserData={updateUserData}
+                    goToLogin={goToLogin}
+                />
             )}
             {page === 'admin' && (
-                <Admin userData={userData} updateUserData={updateUserData} />
+                <Admin
+                    userData={userData}
+                    updateUserData={updateUserData}
+                    goToLogin={goToLogin}
+                />
             )}
         </>
     )
