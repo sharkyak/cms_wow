@@ -8,7 +8,7 @@ import {
     Button
 } from '@material-ui/core'
 
-const Login = ({ updatePage }) => {
+const Login = ({ updatePage, showAlert }) => {
     const [uuid, setUuid] = useState('')
 
     useEffect(() => {
@@ -28,6 +28,8 @@ const Login = ({ updatePage }) => {
             }
         } catch (err) {
             console.log(err)
+            showAlert(true, 'error', 'Пользователь не найден')
+            setTimeout(() => showAlert(false), 5000)
         }
     }
 

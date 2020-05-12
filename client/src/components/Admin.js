@@ -20,7 +20,7 @@ import {
     MenuItem
 } from '@material-ui/core'
 
-const Admin = ({ userData, updateUserData, goToLogin }) => {
+const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
     const [summ, setSumm] = useState('')
     const [descr, setDescr] = useState('')
 
@@ -77,6 +77,8 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
         const summInt = parseInt(summ)
         if (summInt > 0 && descr) {
             try {
+                showAlert(true, 'warning', 'сохранение... ждите...')
+
                 const res = await axios.post('/api/v1/addgold', {
                     summ: summInt,
                     user: userData.user._id,
@@ -87,6 +89,7 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
 
                 setSumm('')
                 setDescr('')
+                showAlert(false)
 
                 if (res.data.success) {
                     updateUserData()
@@ -103,6 +106,8 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
         const priceFloat = parseFloat(priceB.replace(',', '.'))
         if (summInt < 0 && descrB && priceFloat > 0) {
             try {
+                showAlert(true, 'warning', 'сохранение... ждите...')
+
                 const res = await axios.post('/api/v1/addgold', {
                     summ: summInt,
                     user: userData.user._id,
@@ -114,6 +119,7 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
                 setSummB('')
                 setPriceB('')
                 setDescrB('')
+                showAlert(false)
 
                 if (res.data.success) {
                     updateUserData()
@@ -130,6 +136,8 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
         const summInt = parseInt(summP)
         if (summInt > 0 && descrP && userP) {
             try {
+                showAlert(true, 'warning', 'сохранение... ждите...')
+
                 const res = await axios.post('/api/v1/pay', {
                     summ: summInt,
                     user: userP,
@@ -139,6 +147,7 @@ const Admin = ({ userData, updateUserData, goToLogin }) => {
                 setSummP('')
                 setDescrP('')
                 setUserP('')
+                showAlert(false)
 
                 if (res.data.success) {
                     updateUserData()

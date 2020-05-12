@@ -16,7 +16,7 @@ import {
     TableCell
 } from '@material-ui/core'
 
-const User = ({ userData, updateUserData, goToLogin }) => {
+const User = ({ userData, updateUserData, goToLogin, showAlert }) => {
     const [summ, setSumm] = useState('')
     const [descr, setDescr] = useState('')
 
@@ -24,6 +24,7 @@ const User = ({ userData, updateUserData, goToLogin }) => {
         const summInt = parseInt(summ)
         if (summInt > 0 && descr) {
             try {
+                showAlert(true, 'warning', 'сохранение... ждите...')
                 const res = await axios.post('/api/v1/addgold', {
                     summ: summInt,
                     user: userData.user._id,
@@ -34,6 +35,7 @@ const User = ({ userData, updateUserData, goToLogin }) => {
 
                 setSumm('')
                 setDescr('')
+                showAlert(false)
 
                 if (res.data.success) updateUserData()
             } catch (err) {

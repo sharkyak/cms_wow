@@ -4,10 +4,12 @@ import axios from 'axios'
 import Login from './components/Login'
 import User from './components/User'
 import Admin from './components/Admin'
+import Alert from '@material-ui/lab/Alert'
 
 const App = () => {
     const [page, setPage] = useState('login')
     const [userData, setUserData] = useState({})
+    const [alert, setAlert] = useState({})
 
     const updatePage = (userData, topage) => {
         setUserData(userData)
@@ -29,14 +31,20 @@ const App = () => {
 
     const goToLogin = () => setPage('login')
 
+    const showAlert = (show, type, text) => setAlert({ show, type, text })
+
     return (
         <>
-            {page === 'login' && <Login updatePage={updatePage} />}
+            {alert.show && <Alert severity={alert.type}>{alert.text}</Alert>}
+            {page === 'login' && (
+                <Login updatePage={updatePage} showAlert={showAlert} />
+            )}
             {page === 'user' && (
                 <User
                     userData={userData}
                     updateUserData={updateUserData}
                     goToLogin={goToLogin}
+                    showAlert={showAlert}
                 />
             )}
             {page === 'admin' && (
@@ -44,6 +52,7 @@ const App = () => {
                     userData={userData}
                     updateUserData={updateUserData}
                     goToLogin={goToLogin}
+                    showAlert={showAlert}
                 />
             )}
         </>

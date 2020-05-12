@@ -16,3 +16,9 @@
 #uuid {
     text-align: center;
 }
+
+.MuiAlert-root {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+}

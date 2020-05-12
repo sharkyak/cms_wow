@@ -4,3 +4,14 @@ content-type: application/json
 {
     "uuid": "a4c94f9c-8a28-4529-a5fc-5e4ccda4284b"
 }
+
+###
+
+POST http://localhost:5000/api/v1/adduser
+content-type: application/json
+
+{
+	"name": "User",
+	"admin": false,
+	"percent": 3
+}
