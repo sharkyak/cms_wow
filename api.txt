@@ -2,8 +2,12 @@ POST http://localhost:5000/api/v1
 content-type: application/json
 
 {
-    "uuid": "a4c94f9c-8a28-4529-a5fc-5e4ccda4284b"
+    "uuid": "0b506417-ab63-40cd-ab81-6e530f18ec71"
 }
+
+###
+
+GET http://localhost:5000/api/v1
 
 ###
 
@@ -11,7 +15,39 @@ POST http://localhost:5000/api/v1/adduser
 content-type: application/json
 
 {
-	"name": "User",
+	"name": "User3",
 	"admin": false,
-	"percent": 3
+	"percent": 2
 }
+
+###
+
+POST http://localhost:5000/api/v1/addgold
+content-type: application/json
+
+{
+    "user": "5ebab2a330742c1d80084a29",
+	"summ": 10000,
+	"descr": "test",
+	"correction": false,
+	"sellprice": 0
+}
+
+###
+
+POST http://localhost:5000/api/v1/pay
+content-type: application/json
+
+{
+    "user": "5ebabfa118c87825f4dc8abb",
+	"summ": 1000,
+	"descr": "test"
+}
+
+###
+
+POST http://localhost:5000/api/v1/payouts
+
+###
+
+POST http://localhost:5000/api/v1/allgold
