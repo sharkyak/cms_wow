@@ -11,19 +11,17 @@ const App = () => {
     const [userData, setUserData] = useState({})
     const [alert, setAlert] = useState({})
 
-    const updatePage = (userData, topage) => {
-        setUserData(userData)
-        setPage(topage)
-    }
+    const updatePage = topage => setPage(topage)
 
     const updateUserData = async () => {
         try {
-            const uuid = userData.user.uuid
-            const res = await axios.post('/api/v1/', { uuid })
+            const res = await axios.post(
+                '/api/v1/',
+                {},
+                { headers: { 'x-auth-token': localStorage.getItem('token') } }
+            )
 
-            if (res.data.success) {
-                setUserData(res.data.data)
-            }
+            if (res.data.success) setUserData(res.data.data)
         } catch (err) {
             console.log(err)
         }
@@ -37,7 +35,11 @@ const App = () => {
         <>
             {alert.show && <Alert severity={alert.type}>{alert.text}</Alert>}
             {page === 'login' && (
-                <Login updatePage={updatePage} showAlert={showAlert} />
+                <Login
+                    updatePage={updatePage}
+                    showAlert={showAlert}
+                    updateUserData={updateUserData}
+                />
             )}
             {page === 'user' && (
                 <User

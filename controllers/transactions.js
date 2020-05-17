@@ -2,8 +2,44 @@ const User = require('../models/User')
 const Bank = require('../models/Bank')
 const Payout = require('../models/Payout')
 const { updateGold, updateSells, updateTopay } = require('../utils/update')
+const jwt = require('jsonwebtoken')
 
 const { v4: uuidv4 } = require('uuid')
+
+// @desc    Auth
+// @route   POST /api/v1/auth
+// @access  Public
+exports.authUser = async (req, res, next) => {
+    try {
+        const { uuid } = req.body
+
+        const user = await User.findOne({
+            uuid
+        })
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'No users found'
+            })
+        }
+
+        const token = jwt.sign({ user: user._id }, process.env.JWT_SECRET, {
+            expiresIn: 86400
+        })
+        if (!token) throw Error('Couldnt sign the token')
+
+        return res.status(200).json({
+            success: true,
+            data: { token, user }
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            error: 'Server Error'
+        })
+    }
+}
 
 // @desc    Add user
 // @route   POST /api/v1/adduser
@@ -45,13 +81,13 @@ exports.addUser = async (req, res, next) => {
 
 // @desc    Get user info
 // @route   POST /api/v1/
-// @access  Public
+// @access  Private
 exports.getUserInfo = async (req, res, next) => {
     try {
-        const { uuid } = req.body
+        const userId = req.body.user
 
         const user = await User.findOne({
-            uuid
+            _id: userId
         })
 
         if (!user) {
@@ -63,9 +99,9 @@ exports.getUserInfo = async (req, res, next) => {
 
         const tx = await Bank.find({ user }).sort({ _id: -1 }).limit(10)
 
-        await updateGold()
-        await updateSells()
-        await updateTopay()
+        // await updateGold()
+        // await updateSells()
+        // await updateTopay()
 
         return res.status(200).json({
             success: true,
@@ -81,7 +117,7 @@ exports.getUserInfo = async (req, res, next) => {
 
 // @desc    Get all gold data
 // @route   POST /api/v1/allgold
-// @access  Public
+// @access  Private
 exports.getAllGold = async (req, res, next) => {
     try {
         const alltx = await Bank.find()
@@ -104,7 +140,7 @@ exports.getAllGold = async (req, res, next) => {
 
 // @desc    Get all payouts
 // @route   POST /api/v1/payouts
-// @access  Public
+// @access  Private
 exports.getPayouts = async (req, res, next) => {
     try {
         const tx = await Payout.find().sort({ _id: -1 }).limit(10)
@@ -123,7 +159,7 @@ exports.getPayouts = async (req, res, next) => {
 
 // @desc    Get all users
 // @route   GET /api/v1/
-// @access  Public
+// @access  Private
 exports.getUsers = async (req, res, next) => {
     try {
         const users = await User.find()
@@ -146,7 +182,7 @@ exports.getUsers = async (req, res, next) => {
 
 // @desc    Add gold to bank
 // @route   POST /api/v1/addgold
-// @access  Public
+// @access  Private
 exports.addGold = async (req, res, next) => {
     try {
         const { user, summ, descr, correction, sellprice } = req.body
@@ -189,20 +225,20 @@ exports.addGold = async (req, res, next) => {
 
 // @desc    Add payout
 // @route   POST /api/v1/pay
-// @access  Public
+// @access  Private
 exports.payout = async (req, res, next) => {
     try {
-        const { user, summ, descr } = req.body
+        const { usertopay, summ, descr } = req.body
 
         const payment = await Payout.create({
-            user,
+            user: usertopay,
             summ,
             descr,
             date: new Date()
         })
 
         await User.updateOne(
-            { _id: user },
+            { _id: usertopay },
             { $inc: { payed: summ, topay: -summ } }
         )
 

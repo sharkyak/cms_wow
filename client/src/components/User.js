@@ -25,13 +25,20 @@ const User = ({ userData, updateUserData, goToLogin, showAlert }) => {
         if (summInt > 0 && descr) {
             try {
                 showAlert(true, 'warning', 'сохранение... ждите...')
-                const res = await axios.post('/api/v1/addgold', {
-                    summ: summInt,
-                    user: userData.user._id,
-                    descr: descr,
-                    correction: false,
-                    sellprice: 0
-                })
+                const res = await axios.post(
+                    '/api/v1/addgold',
+                    {
+                        summ: summInt,
+                        descr: descr,
+                        correction: false,
+                        sellprice: 0
+                    },
+                    {
+                        headers: {
+                            'x-auth-token': localStorage.getItem('token')
+                        }
+                    }
+                )
 
                 setSumm('')
                 setDescr('')

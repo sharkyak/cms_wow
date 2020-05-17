@@ -7,19 +7,23 @@ const {
     addGold,
     payout,
     getPayouts,
-    getAllGold
+    getAllGold,
+    authUser
 } = require('../controllers/transactions')
+const auth = require('../middleware/auth')
 
-router.route('/').get(getUsers).post(getUserInfo)
+router.route('/auth').post(authUser)
+
+router.route('/').get(auth, getUsers).post(auth, getUserInfo)
 
 router.route('/adduser').post(addUser)
 
-router.route('/addgold').post(addGold)
+router.route('/addgold').post(auth, addGold)
 
-router.route('/pay').post(payout)
+router.route('/pay').post(auth, payout)
 
-router.route('/payouts').post(getPayouts)
+router.route('/payouts').post(auth, getPayouts)
 
-router.route('/allgold').post(getAllGold)
+router.route('/allgold').post(auth, getAllGold)
 
 module.exports = router

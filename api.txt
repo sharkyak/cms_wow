@@ -1,13 +1,20 @@
-POST http://localhost:5000/api/v1
+POST http://localhost:5000/api/v1/auth
 content-type: application/json
 
 {
-    "uuid": "0b506417-ab63-40cd-ab81-6e530f18ec71"
+    "uuid": "95ba8799-a9df-42f5-b4c3-b1b8218f04ac"
 }
 
 ###
 
+POST http://localhost:5000/api/v1
+content-type: application/json
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWVjMGY1NTMxYzdkOGI0MzI0NjcyNDEwIiwiaWF0IjoxNTg5NzE3NDM2LCJleHAiOjE1ODk4MDM4MzZ9.TMIVjFVXDica-l16CUMBT9EM-NJnp6QcZo5Xg-9TJB0
+
+###
+
 GET http://localhost:5000/api/v1
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWViYWIyYTMzMDc0MmMxZDgwMDg0YTI5IiwiaWF0IjoxNTg5Njk5MTk1LCJleHAiOjE1ODk2OTk3OTV9.52ZWl89MnDTiw6gCiAg0hwCo197flB-mJwR_O5SCVu0
 
 ###
 
@@ -15,20 +22,20 @@ POST http://localhost:5000/api/v1/adduser
 content-type: application/json
 
 {
-	"name": "User3",
-	"admin": false,
-	"percent": 2
+	"name": "Vovan",
+	"admin": true,
+	"percent": 0
 }
 
 ###
 
 POST http://localhost:5000/api/v1/addgold
 content-type: application/json
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWViYWIyYTMzMDc0MmMxZDgwMDg0YTI5IiwiaWF0IjoxNTg5Njk5MTk1LCJleHAiOjE1ODk2OTk3OTV9.52ZWl89MnDTiw6gCiAg0hwCo197flB-mJwR_O5SCVu0
 
 {
-    "user": "5ebab2a330742c1d80084a29",
-	"summ": 10000,
-	"descr": "test",
+	"summ": 20000,
+	"descr": "test2",
 	"correction": false,
 	"sellprice": 0
 }
@@ -37,9 +44,10 @@ content-type: application/json
 
 POST http://localhost:5000/api/v1/pay
 content-type: application/json
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWViYWIyYTMzMDc0MmMxZDgwMDg0YTI5IiwiaWF0IjoxNTg5NzAzNTc1LCJleHAiOjE1ODk3MDQxNzV9.yN6hmPj0MwCMrWhA73artUp1Xw5JI9E9Y-UTNERrqj8
 
 {
-    "user": "5ebabfa118c87825f4dc8abb",
+	"usertopay": "5ebabfa118c87825f4dc8abb",
 	"summ": 1000,
 	"descr": "test"
 }
@@ -47,7 +55,9 @@ content-type: application/json
 ###
 
 POST http://localhost:5000/api/v1/payouts
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWViYWIyYTMzMDc0MmMxZDgwMDg0YTI5IiwiaWF0IjoxNTg5Njk5MTk1LCJleHAiOjE1ODk2OTk3OTV9.52ZWl89MnDTiw6gCiAg0hwCo197flB-mJwR_O5SCVu0
 
 ###
 
 POST http://localhost:5000/api/v1/allgold
+x-auth-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiNWViYWIyYTMzMDc0MmMxZDgwMDg0YTI5IiwiaWF0IjoxNTg5Njk5MTk1LCJleHAiOjE1ODk2OTk3OTV9.52ZWl89MnDTiw6gCiAg0hwCo197flB-mJwR_O5SCVu0

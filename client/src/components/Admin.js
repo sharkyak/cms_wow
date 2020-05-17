@@ -39,7 +39,9 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
 
     const fetchUsers = async () => {
         try {
-            const res = await axios.get('/api/v1')
+            const res = await axios.get('/api/v1', {
+                headers: { 'x-auth-token': localStorage.getItem('token') }
+            })
             if (res.data.success) setUsers(res.data.data)
         } catch (err) {
             console.log(err)
@@ -48,7 +50,13 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
 
     const fetchPayouts = async () => {
         try {
-            const res = await axios.post('/api/v1/payouts')
+            const res = await axios.post(
+                '/api/v1/payouts',
+                {},
+                {
+                    headers: { 'x-auth-token': localStorage.getItem('token') }
+                }
+            )
             if (res.data.success) setPayouts(res.data.data.tx)
         } catch (err) {
             console.log(err)
@@ -57,7 +65,13 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
 
     const fetchAllGold = async () => {
         try {
-            const res = await axios.post('/api/v1/allgold')
+            const res = await axios.post(
+                '/api/v1/allgold',
+                {},
+                {
+                    headers: { 'x-auth-token': localStorage.getItem('token') }
+                }
+            )
             if (res.data.success) {
                 setAllGold(res.data.data.tx)
                 setBalance(res.data.data.balance)
@@ -71,6 +85,7 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
         fetchUsers()
         fetchPayouts()
         fetchAllGold()
+        // eslint-disable-next-line
     }, [])
 
     const onClick = async () => {
@@ -79,13 +94,20 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
             try {
                 showAlert(true, 'warning', 'сохранение... ждите...')
 
-                const res = await axios.post('/api/v1/addgold', {
-                    summ: summInt,
-                    user: userData.user._id,
-                    descr: descr,
-                    correction: false,
-                    sellprice: 0
-                })
+                const res = await axios.post(
+                    '/api/v1/addgold',
+                    {
+                        summ: summInt,
+                        descr: descr,
+                        correction: false,
+                        sellprice: 0
+                    },
+                    {
+                        headers: {
+                            'x-auth-token': localStorage.getItem('token')
+                        }
+                    }
+                )
 
                 setSumm('')
                 setDescr('')
@@ -108,13 +130,20 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
             try {
                 showAlert(true, 'warning', 'сохранение... ждите...')
 
-                const res = await axios.post('/api/v1/addgold', {
-                    summ: summInt,
-                    user: userData.user._id,
-                    descr: descrB,
-                    correction: false,
-                    sellprice: priceFloat
-                })
+                const res = await axios.post(
+                    '/api/v1/addgold',
+                    {
+                        summ: summInt,
+                        descr: descrB,
+                        correction: false,
+                        sellprice: priceFloat
+                    },
+                    {
+                        headers: {
+                            'x-auth-token': localStorage.getItem('token')
+                        }
+                    }
+                )
 
                 setSummB('')
                 setPriceB('')
@@ -138,11 +167,19 @@ const Admin = ({ userData, updateUserData, goToLogin, showAlert }) => {
             try {
                 showAlert(true, 'warning', 'сохранение... ждите...')
 
-                const res = await axios.post('/api/v1/pay', {
-                    summ: summInt,
-                    user: userP,
-                    descr: descrP
-                })
+                const res = await axios.post(
+                    '/api/v1/pay',
+                    {
+                        summ: summInt,
+                        usertopay: userP,
+                        descr: descrP
+                    },
+                    {
+                        headers: {
+                            'x-auth-token': localStorage.getItem('token')
+                        }
+                    }
+                )
 
                 setSummP('')
                 setDescrP('')
